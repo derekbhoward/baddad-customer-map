@@ -79,13 +79,23 @@
       font-size: 0.85rem;
       color: #aaa;
     }
-    .info-box .biz-source {
+    .info-box .biz-items {
       margin-top: 8px;
-      font-size: 0.75rem;
-      color: #F4623A;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
+      font-size: 0.8rem;
+      color: #ccc;
+      line-height: 1.5;
+    }
+    .info-box .biz-items span {
+      display: block;
+      padding-left: 10px;
+      position: relative;
+    }
+    .info-box .biz-items span::before {
+      content: "🍺";
+      position: absolute;
+      left: -4px;
+      font-size: 0.7rem;
+      top: 2px;
     }
   </style>
 </head>
@@ -159,11 +169,15 @@
           });
 
           marker.addListener("click", () => {
+            const items = (loc.recent_items || []).slice(0, 3);
+            const itemsHtml = items.length
+              ? `<div class="biz-items">${items.map(i => `<span>${escHtml(i)}</span>`).join('')}</div>`
+              : '';
             infoWindow.setContent(`
               <div class="info-box">
                 <div class="biz-name">${escHtml(loc.name)}</div>
                 <div class="biz-city">${escHtml(loc.city)}, ${escHtml(loc.state)}</div>
-                <div class="biz-source">${escHtml(loc.source)}</div>
+                ${itemsHtml}
               </div>
             `);
             infoWindow.open(map, marker);
